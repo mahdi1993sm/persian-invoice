@@ -1,0 +1,42 @@
+بهترین ترتیب مطالعه برای هوش مصنوعی دیگر
+مسیر سریع (۱۲ دقیقه):
+
+1 AI_SUMMARY.md → README.md → QUICK_START.md
+مسیر کامل (۹۰ دقیقه):
+
+1 AI_SUMMARY.md → README.md → FEATURES_SUMMARY.md → 
+2 TECHNICAL_GUIDE.md → PROJECT_DOCUMENTATION.md
+
+📊 آمار مستندات
+
+ تعداد فایل‌های مستند: ۱۲ فایل
+📝 مجموع زمان مطالعه: ۲ ساعت
+⚡ حداقل زمان برای درک: ۱۲ دقیقه
+🎯 پوشش اطلاعات: ۱۰۰٪
+
+
+🎁 هر فایل چه چیزی را پوشش می‌دهد؟
+AI_SUMMARY.md - خلاصه خیلی سریع برای AI
+README.md - معرفی و نمای کلی
+QUICK_START.md - شروع در ۵ دقیقه
+FEATURES_SUMMARY.md - لیست ۵۰+ قابلیت
+CHANGELOG.md - تاریخچه و باگ‌های رفع شده
+STUDY_GUIDE.md - بهترین ترتیب مطالعه
+TECHNICAL_GUIDE.md - معماری و نحوه کار کد
+DEVELOPER_GUIDE.md - نحوه توسعه و اضافه کردن قابلیت
+PROJECT_DOCUMENTATION.md - تمام جزئیات پروژه
+FINAL_REPORT.md - گزارش نهایی و نتیجه‌گیری
+DOCUMENTATION_INDEX.md - فهرست و جستجو
+MASTER_INDEX.md - نقشه راه کامل
+🚀 شروع کنید!
+برای هوش مصنوعی دیگر:
+فایل AI_SUMMARY.md را بخوانید (۲ دقیقه)
+فایل README.md را بخوانید (۵ دقیقه)
+فایل QUICK_START.md را بخوانید (۵ دقیقه)
+پروژه را اجرا کنید
+در صورت نیاز، سایر مستندات را بخوانید
+برای توسعه‌دهندگان:
+فایل TECHNICAL_GUIDE.md را بخوانید (۲۰ دقیقه)
+فایل DEVELOPER_GUIDE.md را بخوانید (۲۰ دقیقه)
+کد منبع را بررسی کنید
+شروع به توسعه کنید

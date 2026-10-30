@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Invoice Paper Base -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,26 h40 c2.2,0 4,1.8 4,4 v48 c0,2.2 -1.8,4 -4,4 H34 c-2.2,0 -4,-1.8 -4,-4 V30 c0,-2.2 1.8,-4 4,-4 z" />
+    
+    <!-- Invoice Top Header Bar -->
+    <path
+        android:fillColor="#059669"
+        android:pathData="M30,30 c0,-2.2 1.8,-4 4,-4 h40 c2.2,0 4,1.8 4,4 v8 H30 Z" />
+
+    <!-- Invoice Header Mini Lines -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M36,44 h22 v3 h-22 z M36,51 h36 v3 h-36 z M36,58 h28 v3 h-28 z M36,65 h18 v3 h-18 z" />
+
+    <!-- Stamp / Verification Badge on Bottom Right -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M65,60 A9,9 0 1,0 65,78 A9,9 0 1,0 65,60 Z" />
+    
+    <!-- Checkmark inside Badge -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M61.5,69 l2.5,2.5 l5,-5 l1.2,1.2 l-6.2,6.2 l-3.7,-3.7 Z" />
+</vector>
