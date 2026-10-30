@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نرم‌افزار صدور فاکتور و مدیریت فروش | Persian Invoice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Hero Header */
+        header.hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h1.title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 40%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #064e3b;
+        }
+
+        .btn-primary:hover {
+            background: #34d399;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Tech Tags */
+        .tech-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Sections Grid */
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 40px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-right: 4px solid var(--primary);
+            padding-right: 12px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Architecture Map */
+        .architecture-box {
+            background: #020617;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 16px;
+            font-family: monospace;
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+            color: #38bdf8;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        /* Architecture List */
+        .dir-tree {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .dir-tree li {
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .dir-tree li strong {
+            color: var(--primary);
+            direction: ltr;
+            font-family: monospace;
+        }
+
+        .dir-tree li span {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 640px) {
+            h1.title { font-size: 1.9rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Header -->
+    <header class="hero">
+        <div class="container">
+            <span class="badge">سیستم هوشمند صدور و مدیریت فاکتور</span>
+            <h1 class="title">اپلیکیشن اندروید صدور فاکتور رسمی</h1>
+            <p class="subtitle">
+                طراحی مدرن با Jetpack Compose و Material 3، پایگاه داده محلی سریع و آفلاین Room Database، تولید فایل‌های استاندارد چندصفحه‌ای PDF همراه با مهر و امضا و مدیریت کامل کالاها و مشتریان.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#features" class="btn btn-primary">ویژگی‌های برجسته</a>
+                <a href="#codebase" class="btn btn-secondary">ساختار معماری و کدها</a>
+            </div>
+
+            <div class="tech-tags">
+                <span class="tag">Android (Kotlin)</span>
+                <span class="tag">Jetpack Compose M3</span>
+                <span class="tag">Room DB (SQLite)</span>
+                <span class="tag">Firebase Firestore & Auth</span>
+                <span class="tag">100% Offline-First</span>
+                <span class="tag">Persian RTL / Jalali Calendar</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Features Section -->
+        <h2 id="features" class="section-title">قابلیت‌ها و امکانات سیستم</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">📄</div>
+                <h3>صدور فاکتور چندصفحه‌ای PDF استاندارد</h3>
+                <p>موتور هوشمند صفحه‌بندی PDF بومی بر اساس تعداد اقلام با سربرگ تکرارشونده در تمام صفحات، شماره صفحه خودکار و جایگاه رسمی مهر و امضای طرفین.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>مدیریت انبار و کالاها با ویرایش گروهی</h3>
+                <p>فهرست کامل کالاها با فیلتر دسته‌بندی و جستجوی زنده، همراه با ابزار ویرایش گروهی (تغییر درصدی یا مبلغی قیمت‌ها، تغییر دسته و حذف امن).</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h3>بانک اطلاعات مشتریان و اعتبارسنجی دقیق</h3>
+                <p>ثبت مشخصات اشخاص حقیقی و حقوقی با اعتبارسنجی هوشمند کد ملی (۱۰ رقم)، شماره موبایل (۰۹...)، کد پستی (۱۰ رقم) و جلوگیری از خطای کاربر.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💳</div>
+                <h3>شرایط مالی و تسویه فاکتور</h3>
+                <p>ثبت مبالغ پرداختی با روش‌های متنوع (دستگاه پوز، کارت‌به‌کارت، پایا، ساتنا، چک / اقساط، نسیه) و نمایش مانده‌حساب در فاکتور چاپی.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>داشبورد آماری تعاملی و نمودار شمسی</h3>
+                <p>نمودار ماهانه فروش در سال جاری، کارت‌های آماری کلیک‌پذیر (فروش کل، دریافتی، نسیه و بدهی‌ها) با هدایت مستقیم به فیلترهای گزارش.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔒</div>
+                <h3>آفلاین، سریع و ایمن</h3>
+                <p>تمام اطلاعات روی حافظه داخلی گوشی در دیتابیس Room ذخیره می‌شود و بدون نیاز به اینترنت کار می‌کند، همراه با اتصال ابری Firebase.</p>
+            </div>
+        </div>
+
+        <!-- Codebase & Architecture -->
+        <h2 id="codebase" class="section-title">نقشه فایل‌ها و ساختار کدها (Architecture Map)</h2>
+        <p style="color: var(--text-muted); margin-bottom: 14px;">
+            این پروژه بر اساس معماری استاندارد MVVM و Clean Architecture پیاده‌سازی شده است:
+        </p>
+
+        <ul class="dir-tree">
+            <li>
+                <strong>com/example/ui/screens/DashboardScreen.kt</strong>
+                <span>داشبورد اصلی، کارت‌های آماری سریع و نمودار فروش جلالی</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/InvoiceFormScreen.kt</strong>
+                <span>فرم صدور فاکتور جدید، انتخاب کالا، محاسبات تخفیف و مالیات و اعتبارسنجی</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/InvoiceListScreen.kt</strong>
+                <span>لیست فاکتورها با فیلترهای وضعیت (تسویه، نسیه، چک)، جستجو و خروجی PDF</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/InvoiceViewScreen.kt</strong>
+                <span>پیش‌نمایش بصری فاکتور رسمی قبل از چاپ و اشتراک‌گذاری</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/ProductsScreen.kt</strong>
+                <span>مدیریت کالاها، انبار، جستجوی زنده، فیلتر دسته‌ها و ویرایش گروهی</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/CustomersScreen.kt</strong>
+                <span>مدیریت مشتریان و طرف‌های حساب با اعتبارسنجی فیلدهای هویتی</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/BankAccountsScreen.kt</strong>
+                <span>حساب‌های بانکی فروشگاه (کارت، شبا، صاحب حساب) با دکمه بازگشت و ناوبری کامل</span>
+            </li>
+            <li>
+                <strong>com/example/ui/screens/SellerSettingsScreen.kt</strong>
+                <span>مشخصات فروشگاه، لوگو، تصویر مهر و امضا و متن پاورقی فاکتور</span>
+            </li>
+            <li>
+                <strong>com/example/ui/components/AppNavigationDrawer.kt</strong>
+                <span>منوی همبرگری کشویی استاندارد با دسترسی به تمام بخش‌های برنامه</span>
+            </li>
+            <li>
+                <strong>com/example/utils/PdfGeneratorUtil.kt</strong>
+                <span>موتور بومی تولید فاکتور چندصفحه‌ای با سربرگ تکرارشونده و مهر و امضا</span>
+            </li>
+            <li>
+                <strong>com/example/data/db/AppDatabase.kt & Daos.kt</strong>
+                <span>پایگاه داده آفلاین Room Database و عملیات تراکنشی CRUD و Batch</span>
+            </li>
+        </ul>
+
+        <div class="architecture-box">
+┌─────────────────────────────────────────────────────────────┐
+│                    Jetpack Compose UI                       │
+│  MainActivity ── ModalNavigationDrawer ── TopAppBar/BottomNav│
+│       │                                                     │
+│       ├── DashboardScreen     ├── InvoiceFormScreen         │
+│       ├── InvoiceListScreen   ├── ProductsScreen (Batch)    │
+│       ├── CustomersScreen     ├── BankAccountsScreen        │
+│       └── SellerSettings      └── AboutUsDialog             │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  InvoiceViewModel (MVVM)                    │
+│   • MutableStateFlow UI States & Backstack Navigation       │
+│   • Batch price adjustment & category operations            │
+│   • Persian date conversion & live validation               │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Room Database & SQLite (Local Storage)         │
+│   • AppDatabase, Daos (Invoices, Items, Products, Customers)│
+│   • 100% Offline Persistence on User Device                 │
+│   • Optional Firebase Firestore Cloud Sync Ready            │
+└─────────────────────────────────────────────────────────────┘
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>پروژه منبع‌باز صدور فاکتور پارسی • ساخته‌شده با Android، Jetpack Compose و Kotlin</p>
+    </footer>
+
+</body>
+</html>
