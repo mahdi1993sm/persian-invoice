@@ -113,7 +113,7 @@ fun PdfExportConfigDialog(
                                     Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                                 }
                             },
-                            label = { Text("بله، با مهر و امضا") },
+                            label = { Text("با مهر و امضا") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -132,7 +132,7 @@ fun PdfExportConfigDialog(
                                     Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                                 }
                             },
-                            label = { Text("خیر، بدون مهر و امضا") },
+                            label = { Text("بدون مهر و امضا") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -164,7 +164,7 @@ fun PdfExportConfigDialog(
                                     Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                                 }
                             },
-                            label = { Text("قطع A4 (استاندارد)") },
+                            label = { Text("کاغذ A4") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -183,7 +183,7 @@ fun PdfExportConfigDialog(
                                     Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
                                 }
                             },
-                            label = { Text("قطع A5 (فشرده)") },
+                            label = { Text("کاغذ A5") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -213,7 +213,7 @@ fun PdfExportConfigDialog(
                             leadingIcon = {
                                 Icon(Icons.Default.StayCurrentPortrait, contentDescription = null, modifier = Modifier.size(16.dp))
                             },
-                            label = { Text("عمودی (Portrait)") },
+                            label = { Text("عمودی") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -230,7 +230,7 @@ fun PdfExportConfigDialog(
                             leadingIcon = {
                                 Icon(Icons.Default.StayCurrentLandscape, contentDescription = null, modifier = Modifier.size(16.dp))
                             },
-                            label = { Text("افقی (Landscape)") },
+                            label = { Text("افقی") },
                             shape = RoundedCornerShape(12.dp),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = themeColor.copy(alpha = 0.15f),

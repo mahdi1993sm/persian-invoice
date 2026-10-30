@@ -558,7 +558,7 @@ fun ProductsScreen(viewModel: InvoiceViewModel) {
                             nameError = false
                             error = null
                         },
-                        label = { Text("نام کالا یا خدمات (الزامی)") },
+                        label = { Text("نام کالا یا خدمات") },
                         singleLine = true,
                         maxLines = 1,
                         isError = nameError,
@@ -596,7 +596,7 @@ fun ProductsScreen(viewModel: InvoiceViewModel) {
                             priceError = false
                             error = null
                         },
-                        label = { Text("قیمت فروش ($currency) (الزامی)") },
+                        label = { Text("قیمت فروش") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         maxLines = 1,

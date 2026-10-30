@@ -83,7 +83,7 @@ fun BatchPriceAdjustmentDialog(
                     FilterChip(
                         selected = isPercentage,
                         onClick = { isPercentage = true },
-                        label = { Text("درصدی (٪)") },
+                        label = { Text("درصدی") },
                         modifier = Modifier.weight(1f),
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -93,7 +93,7 @@ fun BatchPriceAdjustmentDialog(
                     FilterChip(
                         selected = !isPercentage,
                         onClick = { isPercentage = false },
-                        label = { Text("مبلغ ثابت ($currency)") },
+                        label = { Text("مبلغ ثابت") },
                         modifier = Modifier.weight(1f),
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = themeColor.copy(alpha = 0.15f),
@@ -147,7 +147,7 @@ fun BatchPriceAdjustmentDialog(
                         inputValue = cleaned
                         isError = false
                     },
-                    label = { Text(if (isPercentage) "میزان درصد (مثلا ۱۰ یا ۱۵.۵)" else "مبلغ ($currency)") },
+                    label = { Text(if (isPercentage) "میزان درصد تغییر" else "مبلغ تغییر") },
                     keyboardOptions = KeyboardOptions(keyboardType = if (isPercentage) KeyboardType.Decimal else KeyboardType.Number),
                     singleLine = true,
                     isError = isError,

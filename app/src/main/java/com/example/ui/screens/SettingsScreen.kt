@@ -159,33 +159,79 @@ fun SettingsScreen(viewModel: InvoiceViewModel) {
             }
 
             // Dark Mode & Display Options
+            val currentThemeMode by viewModel.themeMode.collectAsState()
             Card(
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(
-                        text = "نمایش و حالت شب (Dark Mode)",
+                        text = "حالت شب و پوسته تاریک/روشن",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = themeColor
                     )
+                    Text(
+                        text = "می‌توانید هماهنگ با تنظیمات گوشی یا به صورت دستی انتخاب کنید:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Column {
-                            Text("حالت تاریک (Dark Mode)", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                            Text("کاهش خستگی چشم در محیط‌های کم‌نور", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                        Switch(
-                            checked = isDarkMode,
-                            onCheckedChange = { viewModel.toggleDarkMode() },
-                            modifier = Modifier.testTag("dark_mode_switch")
+                        FilterChip(
+                            selected = currentThemeMode == com.example.ui.ThemeMode.SYSTEM,
+                            onClick = { viewModel.setThemeMode(com.example.ui.ThemeMode.SYSTEM) },
+                            leadingIcon = {
+                                Icon(Icons.Default.SettingsBrightness, contentDescription = null, modifier = Modifier.size(16.dp))
+                            },
+                            label = { Text("پیش‌فرض گوشی") },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = themeColor.copy(alpha = 0.15f),
+                                selectedLabelColor = themeColor
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("theme_mode_system")
+                        )
+
+                        FilterChip(
+                            selected = currentThemeMode == com.example.ui.ThemeMode.LIGHT,
+                            onClick = { viewModel.setThemeMode(com.example.ui.ThemeMode.LIGHT) },
+                            leadingIcon = {
+                                Icon(Icons.Default.LightMode, contentDescription = null, modifier = Modifier.size(16.dp))
+                            },
+                            label = { Text("روشن") },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = themeColor.copy(alpha = 0.15f),
+                                selectedLabelColor = themeColor
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("theme_mode_light")
+                        )
+
+                        FilterChip(
+                            selected = currentThemeMode == com.example.ui.ThemeMode.DARK,
+                            onClick = { viewModel.setThemeMode(com.example.ui.ThemeMode.DARK) },
+                            leadingIcon = {
+                                Icon(Icons.Default.DarkMode, contentDescription = null, modifier = Modifier.size(16.dp))
+                            },
+                            label = { Text("تاریک") },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = themeColor.copy(alpha = 0.15f),
+                                selectedLabelColor = themeColor
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("theme_mode_dark")
                         )
                     }
                 }
@@ -313,6 +359,65 @@ fun SettingsScreen(viewModel: InvoiceViewModel) {
                 }
             }
 
+            // Database Reset Section
+            var showResetDialog by remember { mutableStateOf(false) }
+            Card(
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "مدیریت و پاک‌سازی داده‌ها",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFEF4444)
+                    )
+                    Text(
+                        text = "در صورت نیاز به شروع کار از ابتدا، می‌توانید تمام اطلاعات فاکتورها، مشتریان و کالاها را پاک کنید:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    OutlinedButton(
+                        onClick = { showResetDialog = true },
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFEF4444)),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth().testTag("btn_reset_database")
+                    ) {
+                        Icon(Icons.Default.DeleteSweep, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("پاک‌سازی کامل پایگاه داده (شروع از صفر)")
+                    }
+                }
+            }
+
+            if (showResetDialog) {
+                AlertDialog(
+                    onDismissRequest = { showResetDialog = false },
+                    icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = Color(0xFFEF4444)) },
+                    title = { Text("پاک‌سازی کامل داده‌ها") },
+                    text = { Text("آیا مطمئن هستید؟ با این کار تمامی فاکتورها، کالاها، مشتریان و حساب‌های بانکی برای همیشه حذف خواهند شد و برنامه کاملاً خالی می‌شود.") },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                viewModel.clearAllData {
+                                    showResetDialog = false
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF4444))
+                        ) {
+                            Text("بله، همه را پاک کن")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showResetDialog = false }) {
+                            Text("انصراف")
+                        }
+                    }
+                )
+            }
+
             // About App
             Card(
                 shape = RoundedCornerShape(18.dp),
@@ -320,9 +425,9 @@ fun SettingsScreen(viewModel: InvoiceViewModel) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("سامانه جامع صدور فاکتور فروش", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                    Text("نرم‌افزار فاکتور پلاس", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("نسخه ۱.۰.۰ • مجهز به تقویم شمسی جلالی و پایگاه داده محلی سریع", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("نسخه ۱.۰۰ • مجهز به تقویم شمسی جلالی و پایگاه داده محلی سریع", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }

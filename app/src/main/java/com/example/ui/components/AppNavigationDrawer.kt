@@ -81,7 +81,7 @@ fun AppDrawerContent(
                         }
                         Column {
                             Text(
-                                text = sellerInfo?.name?.ifBlank { null } ?: "نرم‌افزار صدور فاکتور",
+                                text = sellerInfo?.name?.ifBlank { null } ?: "فاکتور پلاس",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White

@@ -512,7 +512,7 @@ fun SellerSettingsScreen(viewModel: InvoiceViewModel) {
                     nameError = false
                     isSaved = false
                 },
-                label = { Text("نام فروشگاه یا شرکت (الزامی)") },
+                label = { Text("نام فروشگاه یا شرکت") },
                 singleLine = true,
                 maxLines = 1,
                 isError = nameError,
@@ -541,7 +541,7 @@ fun SellerSettingsScreen(viewModel: InvoiceViewModel) {
                 OutlinedTextField(
                     value = mobile,
                     onValueChange = { mobile = ValidationUtil.cleanMobile(it); isSaved = false },
-                    label = { Text("تلفن همراه (۱۱ رقم با ۰۹)") },
+                    label = { Text("تلفن همراه") },
                     placeholder = { Text("۰۹۱۲۳۴۵۶۷۸۹") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     singleLine = true,
@@ -589,7 +589,7 @@ fun SellerSettingsScreen(viewModel: InvoiceViewModel) {
                 OutlinedTextField(
                     value = nationalCode,
                     onValueChange = { nationalCode = ValidationUtil.cleanNationalCode(it); isSaved = false },
-                    label = { Text("کد ملی / شناسه ملی (۱۰ رقم)") },
+                    label = { Text("کد ملی یا شناسه ملی") },
                     placeholder = { Text("۱۰ رقم عددی") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
@@ -637,7 +637,7 @@ fun SellerSettingsScreen(viewModel: InvoiceViewModel) {
             OutlinedTextField(
                 value = signatureName,
                 onValueChange = { signatureName = ValidationUtil.cleanSingleLine(it); isSaved = false },
-                label = { Text("عنوان امضاکننده فاکتور (مثلاً: مدیریت فروش)") },
+                label = { Text("عنوان امضاکننده فاکتور") },
                 singleLine = true,
                 maxLines = 1,
                 modifier = Modifier.fillMaxWidth()

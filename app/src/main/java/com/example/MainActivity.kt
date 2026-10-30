@@ -50,11 +50,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val darkMode by viewModel.darkMode.collectAsState()
+            val themeMode by viewModel.themeMode.collectAsState()
+            val isSystemDark = androidx.compose.foundation.isSystemInDarkTheme()
+            val isDark = when (themeMode) {
+                com.example.ui.ThemeMode.SYSTEM -> isSystemDark
+                com.example.ui.ThemeMode.LIGHT -> false
+                com.example.ui.ThemeMode.DARK -> true
+            }
             val themeColor = viewModel.getActiveThemeColor()
 
             InvoiceAppTheme(
-                darkTheme = darkMode,
+                darkTheme = isDark,
                 accentColor = themeColor
             ) {
                 // RTL layout support for Persian language
@@ -129,7 +135,7 @@ fun MainAppContent(viewModel: InvoiceViewModel) {
                                 is Screen.InvoiceList -> "فاکتورهای فروش"
                                 is Screen.Products -> "مدیریت کالاها و انبار"
                                 is Screen.Customers -> "مشتریان و طرف‌های حساب"
-                                else -> "فاکتور فروش"
+                                else -> "فاکتور پلاس"
                             }
                             Text(
                                 text = screenTitle,
@@ -280,18 +286,16 @@ fun MainAppContent(viewModel: InvoiceViewModel) {
                     .padding(innerPadding),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Crossfade(targetState = currentScreen, label = "screen_crossfade") { screen ->
-                    when (screen) {
-                        is Screen.Dashboard -> DashboardScreen(viewModel = viewModel)
-                        is Screen.InvoiceList -> InvoiceListScreen(viewModel = viewModel)
-                        is Screen.InvoiceForm -> InvoiceFormScreen(invoiceId = screen.invoiceId, viewModel = viewModel)
-                        is Screen.InvoiceView -> InvoiceViewScreen(invoiceId = screen.invoiceId, viewModel = viewModel)
-                        is Screen.Customers -> CustomersScreen(viewModel = viewModel)
-                        is Screen.Products -> ProductsScreen(viewModel = viewModel)
-                        is Screen.BankAccounts -> BankAccountsScreen(viewModel = viewModel)
-                        is Screen.SellerSettings -> SellerSettingsScreen(viewModel = viewModel)
-                        is Screen.Settings -> SettingsScreen(viewModel = viewModel)
-                    }
+                when (currentScreen) {
+                    is Screen.Dashboard -> DashboardScreen(viewModel = viewModel)
+                    is Screen.InvoiceList -> InvoiceListScreen(viewModel = viewModel)
+                    is Screen.InvoiceForm -> InvoiceFormScreen(invoiceId = (currentScreen as Screen.InvoiceForm).invoiceId, viewModel = viewModel)
+                    is Screen.InvoiceView -> InvoiceViewScreen(invoiceId = (currentScreen as Screen.InvoiceView).invoiceId, viewModel = viewModel)
+                    is Screen.Customers -> CustomersScreen(viewModel = viewModel)
+                    is Screen.Products -> ProductsScreen(viewModel = viewModel)
+                    is Screen.BankAccounts -> BankAccountsScreen(viewModel = viewModel)
+                    is Screen.SellerSettings -> SellerSettingsScreen(viewModel = viewModel)
+                    is Screen.Settings -> SettingsScreen(viewModel = viewModel)
                 }
             }
         }

@@ -363,7 +363,7 @@ fun DashboardScreen(viewModel: InvoiceViewModel) {
                 }
             }
         } else {
-            items(invoices.take(4)) { item ->
+            items(invoices.take(4), key = { it.invoice.id }) { item ->
                 Card(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),

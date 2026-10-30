@@ -649,7 +649,7 @@ fun InvoiceFormScreen(
                             OutlinedTextField(
                                 value = discountPercentInput,
                                 onValueChange = { discountPercentInput = ValidationUtil.cleanDecimal(it) },
-                                label = { Text("تخفیف کلی (درصد)") },
+                                label = { Text("درصد تخفیف کلی") },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                 singleLine = true,
                                 maxLines = 1,
@@ -661,7 +661,7 @@ fun InvoiceFormScreen(
                             OutlinedTextField(
                                 value = taxPercentInput,
                                 onValueChange = { taxPercentInput = ValidationUtil.cleanDecimal(it) },
-                                label = { Text("مالیات بر ارزش افزوده (%)") },
+                                label = { Text("درصد مالیات بر ارزش افزوده") },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                 singleLine = true,
                                 maxLines = 1,
@@ -765,7 +765,7 @@ fun InvoiceFormScreen(
                             OutlinedTextField(
                                 value = paidAmountInput,
                                 onValueChange = { paidAmountInput = ValidationUtil.cleanDigits(it) },
-                                label = { Text("مبلغ پرداختی ($currency)") },
+                                label = { Text("مبلغ پرداختی") },
                                 placeholder = { Text(totalAmount.toString()) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
@@ -890,7 +890,7 @@ fun InvoiceFormScreen(
                         OutlinedTextField(
                             value = paymentTrackingCode,
                             onValueChange = { paymentTrackingCode = ValidationUtil.cleanDigits(it) },
-                            label = { Text("شماره پیگیری / کد رهگیری تراکنش (رسید بانکی)") },
+                            label = { Text("شماره پیگیری و کد رهگیری تراکنش") },
                             placeholder = { Text("مثلاً شماره ارجاع رسید کارتخوان یا انتقال کارت به کارت") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
@@ -933,7 +933,7 @@ fun InvoiceFormScreen(
                                         checkSayadiError = false
                                         validationError = null
                                     },
-                                    label = { Text("شناسه ۱۶ رقمی صیادی (الزامی)") },
+                                    label = { Text("شناسه ۱۶ رقمی صیادی") },
                                     placeholder = { Text("شناسه چک صیاد بنفش") },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     singleLine = true,
@@ -960,7 +960,7 @@ fun InvoiceFormScreen(
                                             checkBankError = false
                                             validationError = null
                                         },
-                                        label = { Text("بانک صادرکننده (الزامی)") },
+                                        label = { Text("بانک صادرکننده") },
                                         singleLine = true,
                                         maxLines = 1,
                                         isError = checkBankError,
@@ -978,7 +978,7 @@ fun InvoiceFormScreen(
                                             checkNumberError = false
                                             validationError = null
                                         },
-                                        label = { Text("شماره چک (الزامی)") },
+                                        label = { Text("شماره چک") },
                                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                         singleLine = true,
                                         maxLines = 1,
@@ -1119,7 +1119,7 @@ fun InvoiceFormScreen(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(filteredCustomers) { cust ->
+                        items(filteredCustomers, key = { it.id }) { cust ->
                             Card(
                                 shape = RoundedCornerShape(12.dp),
                                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
@@ -1221,7 +1221,7 @@ fun InvoiceFormScreen(
                                 modifier = Modifier.height(85.dp),
                                 verticalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
-                                items(filteredCatalog.take(5)) { prod ->
+                                items(filteredCatalog.take(5), key = { it.id }) { prod ->
                                     Surface(
                                         shape = RoundedCornerShape(8.dp),
                                         color = if (selectedProduct?.id == prod.id) themeColor.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
@@ -1255,7 +1255,7 @@ fun InvoiceFormScreen(
                                 itemName = ValidationUtil.cleanSingleLine(it)
                                 itemNameError = false
                             },
-                            label = { Text("نام کالا یا خدمات (الزامی)") },
+                            label = { Text("نام کالا یا خدمات") },
                             singleLine = true,
                             maxLines = 1,
                             isError = itemNameError,
@@ -1293,7 +1293,7 @@ fun InvoiceFormScreen(
                                 itemPrice = ValidationUtil.cleanDigits(it)
                                 itemPriceError = false
                             },
-                            label = { Text("قیمت واحد ($currency) (الزامی)") },
+                            label = { Text("قیمت واحد") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
                             maxLines = 1,
@@ -1387,7 +1387,7 @@ fun InvoiceFormScreen(
                             newName = ValidationUtil.cleanSingleLine(it)
                             newNameError = false
                         },
-                        label = { Text("نام شخص یا شرکت (الزامی)") },
+                        label = { Text("نام شخص یا شرکت") },
                         singleLine = true,
                         maxLines = 1,
                         isError = newNameError,
@@ -1404,7 +1404,7 @@ fun InvoiceFormScreen(
                     OutlinedTextField(
                         value = newMobile,
                         onValueChange = { newMobile = ValidationUtil.cleanMobile(it) },
-                        label = { Text("شماره همراه (۱۱ رقم با ۰۹)") },
+                        label = { Text("شماره همراه") },
                         placeholder = { Text("۰۹۱۲۳۴۵۶۷۸۹") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         singleLine = true,

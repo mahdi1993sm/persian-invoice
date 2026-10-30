@@ -326,7 +326,7 @@ fun BankAccountsScreen(viewModel: InvoiceViewModel) {
                             bankNameError = false
                             error = null
                         },
-                        label = { Text("نام بانک (الزامی)") },
+                        label = { Text("نام بانک") },
                         singleLine = true,
                         maxLines = 1,
                         isError = bankNameError,
@@ -361,7 +361,7 @@ fun BankAccountsScreen(viewModel: InvoiceViewModel) {
                     OutlinedTextField(
                         value = shebaNumber,
                         onValueChange = { shebaNumber = ValidationUtil.cleanSingleLine(it).take(26) },
-                        label = { Text("شماره شبا (۲۴ رقم)") },
+                        label = { Text("شماره شبا") },
                         placeholder = { Text("IR...") },
                         singleLine = true,
                         maxLines = 1,

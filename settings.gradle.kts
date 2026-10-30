@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "SalesInvoice"
+rootProject.name = "FactorPlus"
 
 include(":app")

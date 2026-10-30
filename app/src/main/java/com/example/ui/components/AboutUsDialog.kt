@@ -70,7 +70,7 @@ fun AboutUsDialog(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "نرم‌افزار مدیریت و صدور فاکتور",
+                        text = "نرم‌افزار فاکتور پلاس",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -83,7 +83,7 @@ fun AboutUsDialog(
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
-                            text = "نسخه ۱.۴.۰ - کاملاً آفلاین و ایمن",
+                            text = "نسخه ۱.۰۰ - پایگاه داده آفلاین، سریع و ایمن",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = themeColor,

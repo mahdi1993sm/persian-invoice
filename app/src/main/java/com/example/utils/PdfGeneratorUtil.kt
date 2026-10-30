@@ -9,6 +9,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
 import com.example.data.db.InvoiceWithItems
 import com.example.data.model.SellerInfo
@@ -665,7 +669,59 @@ object PdfGeneratorUtil {
             // Fallback: file is already safely in app external storage/cache
         }
 
+        // Post download notification so user can track status and tap to open
+        showDownloadNotification(context, tempFile, invoiceNumber)
+
         return tempFile
+    }
+
+    private fun showDownloadNotification(context: Context, file: File, invoiceNumber: String) {
+        try {
+            val channelId = "pdf_download_channel"
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "دانلود فاکتورها",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = "نمایش وضعیت دانلود فایل‌های PDF فاکتورها"
+                }
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
+
+            val viewIntent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                invoiceNumber.hashCode(),
+                viewIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val notification = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setContentTitle("دانلود فاکتور $invoiceNumber")
+                .setContentText("فایل با موفقیت در پوشه Downloads ذخیره شد (برای باز کردن لمس کنید)")
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build()
+
+            notificationManager.notify(invoiceNumber.hashCode(), notification)
+        } catch (_: Exception) {
+            // Gracefully ignore notification errors if permissions are disabled on device
+        }
     }
 
     /**

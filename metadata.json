@@ -1,5 +1,5 @@
 {
-  "name": "فاکتور فروش",
+  "name": "فاکتور پلاس",
   "description": "سیستم جامع صدور و مدیریت فاکتور فروش، مشتریان، کالاها و گزارشات مالی با تقویم شمسی",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

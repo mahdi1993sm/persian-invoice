@@ -309,7 +309,7 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                             nameError = false
                             error = null
                         },
-                        label = { Text("نام مشتری / شرکت (الزامی)") },
+                        label = { Text("نام مشتری یا شرکت") },
                         singleLine = true,
                         isError = nameError,
                         supportingText = {
@@ -328,7 +328,7 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                         OutlinedTextField(
                             value = mobile,
                             onValueChange = { mobile = ValidationUtil.cleanMobile(it) },
-                            label = { Text("تلفن همراه (۱۱ رقم با ۰۹)") },
+                            label = { Text("تلفن همراه") },
                             placeholder = { Text("۰۹۱۲۳۴۵۶۷۸۹") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                             singleLine = true,
@@ -385,7 +385,7 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                         OutlinedTextField(
                             value = nationalCode,
                             onValueChange = { nationalCode = ValidationUtil.cleanNationalCode(it) },
-                            label = { Text("کد ملی (۱۰ رقم)") },
+                            label = { Text("کد ملی") },
                             placeholder = { Text("۱۰ رقم عددی") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
@@ -403,7 +403,7 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                         OutlinedTextField(
                             value = postalCode,
                             onValueChange = { postalCode = ValidationUtil.cleanPostalCode(it) },
-                            label = { Text("کد پستی (۱۰ رقم)") },
+                            label = { Text("کد پستی") },
                             placeholder = { Text("۱۰ رقم عددی") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,

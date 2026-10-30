@@ -33,6 +33,12 @@ sealed class Screen {
     object Settings : Screen()
 }
 
+enum class ThemeMode {
+    SYSTEM, // پیش‌فرض تم گوشی
+    LIGHT,  // روشن
+    DARK    // تاریک
+}
+
 class InvoiceViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: InvoiceRepository
 
@@ -46,6 +52,14 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
         repository = InvoiceRepository(db)
         viewModelScope.launch {
             repository.seedInitialDataIfEmpty()
+            repository.getSetting("theme_color")?.let { _themeColorHex.value = it }
+            repository.getSetting("currency")?.let { _currency.value = it }
+            repository.getSetting("invoice_prefix")?.let { _invoicePrefix.value = it }
+            repository.getSetting("theme_mode")?.let { modeStr ->
+                try {
+                    _themeMode.value = ThemeMode.valueOf(modeStr)
+                } catch (_: Exception) {}
+            }
         }
         viewModelScope.launch {
             _screenStack.collect { stack ->
@@ -106,6 +120,9 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
     private val _themeColorHex = MutableStateFlow("#10B981")
     val themeColorHex: StateFlow<String> = _themeColorHex.asStateFlow()
 
+    private val _themeMode = MutableStateFlow(ThemeMode.SYSTEM)
+    val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
+
     private val _darkMode = MutableStateFlow(false)
     val darkMode: StateFlow<Boolean> = _darkMode.asStateFlow()
 
@@ -125,10 +142,23 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun toggleDarkMode() {
-        _darkMode.value = !_darkMode.value
+    fun setThemeMode(mode: ThemeMode) {
+        _themeMode.value = mode
+        _darkMode.value = (mode == ThemeMode.DARK)
         viewModelScope.launch {
-            repository.setSetting("dark_mode", _darkMode.value.toString())
+            repository.setSetting("theme_mode", mode.name)
+        }
+    }
+
+    fun toggleDarkMode() {
+        val nextMode = if (_themeMode.value == ThemeMode.DARK) ThemeMode.LIGHT else ThemeMode.DARK
+        setThemeMode(nextMode)
+    }
+
+    fun clearAllData(onDone: (() -> Unit)? = null) {
+        viewModelScope.launch {
+            repository.clearAllData()
+            onDone?.invoke()
         }
     }
 
