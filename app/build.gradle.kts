@@ -16,8 +16,8 @@ android {
     applicationId = "com.aistudio.invoice.vpxrqk"
     minSdk = 24
     targetSdk = 36
-    versionCode = 5
-    versionName = "1.00"
+    versionCode = 7
+    versionName = "1.11"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

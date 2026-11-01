@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.data.model.BankAccount
@@ -60,15 +62,23 @@ fun InvoiceFormScreen(
     val products by viewModel.products.collectAsState()
     val bankAccounts by viewModel.bankAccounts.collectAsState()
     val currency by viewModel.currency.collectAsState()
-    val defaultTax by viewModel.defaultTaxPercent.collectAsState()
     val invoicePrefix by viewModel.invoicePrefix.collectAsState()
+    val invoices by viewModel.invoicesWithItems.collectAsState()
     val themeColor = viewModel.getActiveThemeColor()
 
     // Form States
-    var invoiceNumber by remember { mutableStateOf("$invoicePrefix${System.currentTimeMillis() % 100000}") }
-    var selectedCustomer by remember { mutableStateOf<Customer?>(null) }
     var createdAt by remember { mutableStateOf(JalaliCalendar.getTodayString()) }
+    var invoiceNumber by remember { mutableStateOf(viewModel.getNextInvoiceNumber(createdAt)) }
+    var isManuallyEditedNumber by remember { mutableStateOf(false) }
+    var selectedCustomer by remember { mutableStateOf<Customer?>(null) }
     var dueDate by remember { mutableStateOf(JalaliCalendar.getTodayString()) }
+
+    // Automatically recalculate next sequential invoice number (e.g. 1405-001) for new invoices
+    LaunchedEffect(invoiceId, createdAt, invoices) {
+        if (invoiceId == null && !isManuallyEditedNumber) {
+            invoiceNumber = viewModel.getNextInvoiceNumber(createdAt)
+        }
+    }
     var paymentType by remember { mutableStateOf("cash") } // cash, credit, check
     var cashMethod by remember { mutableStateOf("pos") } // pos, card_to_card, paya, satna, cash
     var selectedBankAccount by remember { mutableStateOf<BankAccount?>(null) }
@@ -90,9 +100,9 @@ fun InvoiceFormScreen(
     // Items list
     val items = remember { mutableStateListOf<InvoiceItem>() }
 
-    // Discount & Tax
+    // Discount & Tax (Default tax initialized to 0 per user preference)
     var discountPercentInput by remember { mutableStateOf("0") }
-    var taxPercentInput by remember { mutableStateOf(defaultTax.toInt().toString()) }
+    var taxPercentInput by remember { mutableStateOf("0") }
     var paidAmountInput by remember { mutableStateOf("") }
 
     // Dialogs
@@ -352,36 +362,38 @@ fun InvoiceFormScreen(
                         ) {
                             OutlinedTextField(
                                 value = invoiceNumber,
-                                onValueChange = { invoiceNumber = it },
+                                onValueChange = {
+                                    invoiceNumber = it
+                                    isManuallyEditedNumber = true
+                                },
                                 label = { Text("شماره فاکتور") },
+                                textStyle = LocalTextStyle.current.copy(textDirection = TextDirection.Ltr),
                                 singleLine = true,
+                                maxLines = 1,
+                                shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("input_invoice_number")
                             )
 
-                            OutlinedCard(
-                                onClick = { showDatePickerFor = "created" },
+                            OutlinedTextField(
+                                value = createdAt,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("تاریخ صدور") },
+                                trailingIcon = {
+                                    IconButton(onClick = { showDatePickerFor = "created" }) {
+                                        Icon(Icons.Default.CalendarToday, contentDescription = null, modifier = Modifier.size(18.dp), tint = themeColor)
+                                    }
+                                },
+                                singleLine = true,
+                                maxLines = 1,
                                 shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier
                                     .weight(1f)
-                                    .height(56.dp)
+                                    .clickable { showDatePickerFor = "created" }
                                     .testTag("picker_created_date")
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(horizontal = 12.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column {
-                                        Text("تاریخ صدور", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                        Text(createdAt, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                                    }
-                                    Icon(Icons.Default.CalendarToday, contentDescription = null, modifier = Modifier.size(20.dp), tint = themeColor)
-                                }
-                            }
+                            )
                         }
                     }
                 }
@@ -649,10 +661,12 @@ fun InvoiceFormScreen(
                             OutlinedTextField(
                                 value = discountPercentInput,
                                 onValueChange = { discountPercentInput = ValidationUtil.cleanDecimal(it) },
-                                label = { Text("درصد تخفیف کلی") },
+                                label = { Text("تخفیف") },
+                                suffix = { Text("%", fontWeight = FontWeight.Bold, color = themeColor) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                 singleLine = true,
                                 maxLines = 1,
+                                shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("input_discount_percent")
@@ -661,10 +675,12 @@ fun InvoiceFormScreen(
                             OutlinedTextField(
                                 value = taxPercentInput,
                                 onValueChange = { taxPercentInput = ValidationUtil.cleanDecimal(it) },
-                                label = { Text("درصد مالیات بر ارزش افزوده") },
+                                label = { Text("مالیات بر ارزش افزوده") },
+                                suffix = { Text("%", fontWeight = FontWeight.Bold, color = themeColor) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                 singleLine = true,
                                 maxLines = 1,
+                                shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag("input_tax_percent")
@@ -770,32 +786,29 @@ fun InvoiceFormScreen(
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
                                 maxLines = 1,
-                                modifier = Modifier
-                                    .weight(1.2f)
-                                    .testTag("input_paid_amount")
-                            )
-
-                            OutlinedCard(
-                                onClick = { showDatePickerFor = "paymentDate" },
                                 shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier
                                     .weight(1f)
-                                    .height(56.dp)
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(horizontal = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column {
-                                        Text("تاریخ واریز", style = MaterialTheme.typography.labelSmall)
-                                        Text(paymentDate, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+                                    .testTag("input_paid_amount")
+                            )
+
+                            OutlinedTextField(
+                                value = paymentDate,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("تاریخ واریز") },
+                                trailingIcon = {
+                                    IconButton(onClick = { showDatePickerFor = "paymentDate" }) {
+                                        Icon(Icons.Default.CalendarMonth, contentDescription = null, modifier = Modifier.size(18.dp), tint = themeColor)
                                     }
-                                    Icon(Icons.Default.CalendarMonth, contentDescription = null, modifier = Modifier.size(18.dp), tint = themeColor)
-                                }
-                            }
+                                },
+                                singleLine = true,
+                                maxLines = 1,
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable { showDatePickerFor = "paymentDate" }
+                            )
                         }
 
                         // Quick full payment button if amount isn't full
@@ -820,32 +833,44 @@ fun InvoiceFormScreen(
                             }
                         }
 
-                        // 3. Payment Method Selection Chips
-                        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        // 3. Payment Method Selection (2 columns per row)
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text("روش پرداخت و واریز:", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold)
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(6.dp)
-                            ) {
-                                val methods = listOf(
-                                    "کارتخوان (پوز)" to "pos",
-                                    "کارت به کارت" to "card_to_card",
-                                    "واریز به حساب" to "paya",
-                                    "نقدی (اسکناس)" to "cash",
-                                    "چک صیادی" to "check"
-                                )
-                                methods.forEach { (name, methodKey) ->
-                                    val isSelected = paymentMethod == name || (paymentType == "check" && name == "چک صیادی")
-                                    FilterChip(
-                                        selected = isSelected,
-                                        onClick = {
-                                            paymentMethod = name
-                                            cashMethod = methodKey
-                                            if (name == "چک صیادی") paymentType = "check"
-                                        },
-                                        label = { Text(name, style = MaterialTheme.typography.labelSmall) },
-                                        shape = RoundedCornerShape(10.dp)
-                                    )
+                            val methods = listOf(
+                                "کارتخوان (پوز)" to "pos",
+                                "کارت به کارت" to "card_to_card",
+                                "واریز به حساب" to "paya",
+                                "نقدی" to "cash"
+                            )
+                            methods.chunked(2).forEach { rowMethods ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    rowMethods.forEach { (name, methodKey) ->
+                                        val isSelected = paymentMethod.startsWith(name) || (name == "نقدی" && paymentMethod.startsWith("نقدی"))
+                                        FilterChip(
+                                            selected = isSelected,
+                                            onClick = {
+                                                paymentMethod = name
+                                                cashMethod = methodKey
+                                            },
+                                            label = {
+                                                Text(
+                                                    text = name,
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    textAlign = TextAlign.Center
+                                                )
+                                            },
+                                            shape = RoundedCornerShape(10.dp),
+                                            colors = FilterChipDefaults.filterChipColors(
+                                                selectedContainerColor = themeColor.copy(alpha = 0.15f),
+                                                selectedLabelColor = themeColor
+                                            ),
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -1448,8 +1473,8 @@ fun InvoiceFormScreen(
                                     address = newAddress.trim(),
                                     createdAt = JalaliCalendar.getTodayString()
                                 )
-                                viewModel.saveCustomer(newCustomer) {
-                                    selectedCustomer = newCustomer
+                                viewModel.saveCustomer(newCustomer) { savedId ->
+                                    selectedCustomer = newCustomer.copy(id = savedId)
                                     customerError = false
                                     validationError = null
                                     showNewCustomerDialog = false
@@ -1478,7 +1503,12 @@ fun InvoiceFormScreen(
             initialDate = initial,
             onDateSelected = { picked ->
                 when (showDatePickerFor) {
-                    "created" -> createdAt = picked
+                    "created" -> {
+                        createdAt = picked
+                        if (invoiceId == null && !isManuallyEditedNumber) {
+                            invoiceNumber = viewModel.getNextInvoiceNumber(picked)
+                        }
+                    }
                     "due" -> dueDate = picked
                     "checkDue" -> checkDueDate = picked
                     "paymentDate" -> paymentDate = picked

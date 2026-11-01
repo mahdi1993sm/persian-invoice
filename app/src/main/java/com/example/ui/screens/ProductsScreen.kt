@@ -190,30 +190,44 @@ fun ProductsScreen(viewModel: InvoiceViewModel) {
         ) {
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Search Bar & Action Buttons
+            // 1. Full-width Search Input
+            SearchInputField(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholder = "جستجوی نام یا کد کالا...",
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // 2. Control Actions Row (Display Mode & Batch Operations)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                SearchInputField(
-                    query = searchQuery,
-                    onQueryChange = { searchQuery = it },
-                    placeholder = "جستجوی نام یا کد کالا...",
-                    modifier = Modifier.weight(1f)
-                )
-
-                IconButton(
+                // View Mode Toggle (Grid vs List)
+                OutlinedButton(
                     onClick = { isGridView = !isGridView },
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.testTag("toggle_product_view")
                 ) {
                     Icon(
                         imageVector = if (isGridView) Icons.Default.ViewList else Icons.Default.GridView,
-                        contentDescription = "تغییر حالت نمایش",
-                        tint = themeColor
+                        contentDescription = null,
+                        tint = themeColor,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = if (isGridView) "نمایش لیستی" else "نمایش شبکه‌ای",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
 
+                // Batch Edit Mode Toggle
                 FilledTonalButton(
                     onClick = {
                         isBatchMode = !isBatchMode
@@ -224,7 +238,7 @@ fun ProductsScreen(viewModel: InvoiceViewModel) {
                         contentColor = if (isBatchMode) themeColor else MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(horizontal = 10.dp),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
                     modifier = Modifier.testTag("toggle_batch_mode")
                 ) {
                     Icon(
@@ -232,9 +246,9 @@ fun ProductsScreen(viewModel: InvoiceViewModel) {
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = if (isBatchMode) "اتمام" else "ویرایش گروهی",
+                        text = if (isBatchMode) "اتمام انتخاب" else "ویرایش گروهی",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold
                     )

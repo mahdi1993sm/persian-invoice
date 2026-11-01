@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:width="72dp"
-        android:height="72dp"
-        android:drawable="@drawable/app_logo"
-        android:gravity="center" />
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Paper Shadow -->
+    <path
+        android:fillColor="#15000000"
+        android:pathData="M37,29 L75,29 C77.2,29 79,30.8 79,33 L79,83 L73.5,79.5 L68,83 L62.5,79.5 L57,83 L51.5,79.5 L46,83 L40.5,79.5 L35,83 L35,33 C35,30.8 36.8,29 37,29 Z" />
+
+    <!-- Receipt Paper Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,27 L73,27 C75.2,27 77,28.8 77,31 L77,81 L71.75,77.5 L66.5,81 L61.25,77.5 L56,81 L50.75,77.5 L45.5,81 L40.25,77.5 L35,81 L35,31 C35,28.8 36.8,27 35,27 Z" />
+
+    <!-- Top Accent Bar on Receipt -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M35,31 C35,28.8 36.8,27 39,27 L73,27 C75.2,27 77,28.8 77,31 L77,37 L35,37 Z" />
+
+    <!-- Receipt Lines (Items & Details) -->
+    <path
+        android:fillColor="#6EE7B7"
+        android:pathData="M41,42 L58,42 C59,42 59.5,42.7 59.5,43.5 C59.5,44.3 59,45 58,45 L41,45 C40,45 39.5,44.3 39.5,43.5 C39.5,42.7 40,42 41,42 Z" />
+
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M41,49 L69,49 C70,49 70.5,49.7 70.5,50.5 C70.5,51.3 70,52 69,52 L41,52 C40,52 39.5,51.3 39.5,50.5 C39.5,49.7 40,49 41,49 Z" />
+
+    <path
+        android:fillColor="#CBD5E1"
+        android:pathData="M41,56 L69,56 C70,56 70.5,56.7 70.5,57.5 C70.5,58.3 70,59 69,59 L41,59 C40,59 39.5,58.3 39.5,57.5 C39.5,56.7 40,56 41,56 Z" />
+
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M41,63 L57,63 C58,63 58.5,63.7 58.5,64.5 C58.5,65.3 58,66 57,66 L41,66 C40,66 39.5,65.3 39.5,64.5 C39.5,63.7 40,63 41,63 Z" />
+
+    <!-- Plus Badge Glow / Shadow -->
+    <path
+        android:fillColor="#25000000"
+        android:pathData="M69,69m-14,0a14,14 0 1,0 28,0a14,14 0 1,0 -28,0" />
+
+    <!-- Plus Badge White Border & Vibrant Emerald Circle -->
+    <path
+        android:fillColor="#10B981"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:pathData="M67,67m-12.5,0a12.5,12.5 0 1,0 25,0a12.5,12.5 0 1,0 -25,0" />
+
+    <!-- Plus Symbol (+) in pure White -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M65.5,59.5 L68.5,59.5 L68.5,65.5 L74.5,65.5 L74.5,68.5 L68.5,68.5 L68.5,74.5 L65.5,74.5 L65.5,68.5 L59.5,68.5 L59.5,65.5 L65.5,65.5 Z" />
+
+</vector>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background with rounded squircle -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGrad)" />
+
+  <!-- White Receipt Paper with Shadow -->
+  <path d="M165,115 L347,115 C358,115 367,124 367,135 L367,390 L342,374 L317,390 L292,374 L266,390 L241,374 L216,390 L191,374 L165,390 L145,390 L145,135 C145,124 154,115 165,115 Z" fill="#FFFFFF" filter="url(#shadow)" />
+
+  <!-- Top Accent Bar on Paper -->
+  <path d="M145,135 C145,124 154,115 165,115 L347,115 C358,115 367,124 367,135 L367,165 L145,165 Z" fill="#10B981" />
+
+  <!-- Receipt Data Lines -->
+  <!-- Line 1: emerald badge -->
+  <rect x="175" y="195" width="85" height="16" rx="8" fill="#34D399" />
+  <!-- Line 2 -->
+  <rect x="175" y="232" width="145" height="14" rx="7" fill="#94A3B8" />
+  <!-- Line 3 -->
+  <rect x="175" y="266" width="145" height="14" rx="7" fill="#CBD5E1" />
+  <!-- Line 4 -->
+  <rect x="175" y="300" width="105" height="14" rx="7" fill="#E2E8F0" />
+
+  <!-- Vibrant Plus Badge -->
+  <g filter="url(#badgeShadow)">
+    <circle cx="340" cy="340" r="76" fill="#FFFFFF" />
+    <circle cx="340" cy="340" r="66" fill="#10B981" />
+    <!-- White Plus Symbol -->
+    <rect x="326" y="296" width="28" height="88" rx="7" fill="#FFFFFF" />
+    <rect x="296" y="326" width="88" height="28" rx="7" fill="#FFFFFF" />
+  </g>
+</svg>

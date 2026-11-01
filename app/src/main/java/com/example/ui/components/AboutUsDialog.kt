@@ -83,7 +83,7 @@ fun AboutUsDialog(
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
-                            text = "نسخه ۱.۰۰ - پایگاه داده آفلاین، سریع و ایمن",
+                            text = "نسخه ۱.۱۱ - پایگاه داده آفلاین، سریع و ایمن",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = themeColor,

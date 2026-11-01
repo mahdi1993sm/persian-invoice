@@ -140,43 +140,64 @@ fun DashboardScreen(viewModel: InvoiceViewModel) {
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
                     onClick = { viewModel.navigateTo(Screen.InvoiceForm(null)) },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = themeColor),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
                     modifier = Modifier
                         .weight(1f)
+                        .height(46.dp)
                         .testTag("new_invoice_quick_button")
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("فاکتور جدید", style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        text = "فاکتور جدید",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
+                    )
                 }
 
                 OutlinedButton(
                     onClick = { viewModel.navigateTo(Screen.Customers) },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
                     modifier = Modifier
                         .weight(1f)
+                        .height(46.dp)
                         .testTag("customers_quick_button")
                 ) {
-                    Icon(Icons.Default.People, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.People, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("مشتریان", style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        text = "مشتریان",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
+                    )
                 }
 
                 OutlinedButton(
                     onClick = { viewModel.navigateTo(Screen.Products) },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
                     modifier = Modifier
                         .weight(1f)
+                        .height(46.dp)
                         .testTag("products_quick_button")
                 ) {
-                    Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("کالاها", style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        text = "کالاها",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
+                    )
                 }
             }
         }

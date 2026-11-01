@@ -14,6 +14,7 @@ import com.example.data.model.Product
 import com.example.data.model.SellerInfo
 import com.example.data.repository.InvoiceRepository
 import com.example.ui.theme.ThemeColors
+import com.example.utils.JalaliCalendar
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -132,7 +133,7 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
     private val _defaultTaxPercent = MutableStateFlow(10.0)
     val defaultTaxPercent: StateFlow<Double> = _defaultTaxPercent.asStateFlow()
 
-    private val _invoicePrefix = MutableStateFlow("INV-1403-")
+    private val _invoicePrefix = MutableStateFlow("${JalaliCalendar.getToday().year}-")
     val invoicePrefix: StateFlow<String> = _invoicePrefix.asStateFlow()
 
     fun setThemeColor(hex: String) {
@@ -184,10 +185,10 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     // CRUD Customer
-    fun saveCustomer(customer: Customer, onDone: (() -> Unit)? = null) {
+    fun saveCustomer(customer: Customer, onDone: ((Long) -> Unit)? = null) {
         viewModelScope.launch {
-            repository.saveCustomer(customer)
-            onDone?.invoke()
+            val id = repository.saveCustomer(customer)
+            onDone?.invoke(if (customer.id != 0L) customer.id else id)
         }
     }
 
@@ -285,6 +286,24 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
     // CRUD Invoice
     fun saveInvoice(invoice: Invoice, items: List<InvoiceItem>, onSaved: (Long) -> Unit) {
         viewModelScope.launch {
+            // Automatically save any new products that do not exist yet in catalog
+            val existingProducts = products.value
+            items.forEach { item ->
+                val name = item.productName.trim()
+                if (name.isNotBlank()) {
+                    val exists = existingProducts.any { it.name.trim().equals(name, ignoreCase = true) }
+                    if (!exists) {
+                        repository.saveProduct(
+                            Product(
+                                name = name,
+                                price = item.unitPrice,
+                                unit = item.unit.ifBlank { "عدد" },
+                                category = "عمومی"
+                            )
+                        )
+                    }
+                }
+            }
             val id = repository.saveInvoice(invoice, items)
             onSaved(id)
         }
@@ -311,5 +330,30 @@ class InvoiceViewModel(application: Application) : AndroidViewModel(application)
     fun getActiveThemeColor(): Color {
         val found = ThemeColors.find { it.hex.equals(_themeColorHex.value, ignoreCase = true) }
         return found?.primary ?: ThemeColors[0].primary
+    }
+
+    /**
+     * Calculates the next sequential invoice number based on the Jalali year of the invoice date.
+     * Begins at [Year]-001 (e.g. 1405-001) and increments sequentially for each invoice.
+     * When the year transitions (e.g. 1406), it rolls over to 1406-001.
+     */
+    fun getNextInvoiceNumber(dateStr: String = JalaliCalendar.getTodayString()): String {
+        val year = dateStr.split("/").firstOrNull()?.toIntOrNull() ?: JalaliCalendar.getToday().year
+        val prefix = "$year-"
+
+        val existingInvoices = invoicesWithItems.value.map { it.invoice.invoiceNumber.trim() }
+
+        var maxSeq = 0
+        for (num in existingInvoices) {
+            if (num.startsWith(prefix, ignoreCase = true)) {
+                val suffix = num.removePrefix(prefix).trim()
+                val seq = suffix.takeWhile { it.isDigit() }.toIntOrNull()
+                if (seq != null && seq > maxSeq) {
+                    maxSeq = seq
+                }
+            }
+        }
+        val nextSeq = maxSeq + 1
+        return "$prefix${String.format(java.util.Locale.US, "%03d", nextSeq)}"
     }
 }

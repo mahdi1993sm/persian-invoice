@@ -116,8 +116,11 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     items(filteredCustomers, key = { it.id }) { cust ->
-                        // Calculate customer spending and debt
-                        val customerInvoices = invoices.filter { it.invoice.customerId == cust.id }
+                        // Calculate customer spending and debt dynamically from all recorded invoices
+                        val customerInvoices = invoices.filter {
+                            it.invoice.customerId == cust.id ||
+                            (it.invoice.customerName.isNotBlank() && it.invoice.customerName.trim().equals(cust.name.trim(), ignoreCase = true))
+                        }
                         val totalPurchases = customerInvoices.sumOf { it.invoice.totalAmount }
                         val totalDebt = customerInvoices.sumOf { it.invoice.remainingAmount }
 
@@ -227,22 +230,49 @@ fun CustomersScreen(viewModel: InvoiceViewModel) {
                                         )
                                     }
 
-                                    if (totalDebt > 0) {
-                                        Column(horizontalAlignment = Alignment.End) {
-                                            Text("مانده بدهی", style = MaterialTheme.typography.labelSmall, color = Color(0xFFEF4444))
+                                    if (customerInvoices.isEmpty()) {
+                                        Surface(
+                                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ) {
                                             Text(
-                                                text = PersianNumberFormatter.formatPrice(totalDebt, currency),
-                                                style = MaterialTheme.typography.labelMedium,
-                                                fontWeight = FontWeight.Bold,
-                                                color = Color(0xFFEF4444)
+                                                text = "بدون گردش حساب",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                             )
                                         }
+                                    } else if (totalDebt > 0) {
+                                        Surface(
+                                            color = Color(0xFFEF4444).copy(alpha = 0.12f),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ) {
+                                            Column(
+                                                horizontalAlignment = Alignment.End,
+                                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                            ) {
+                                                Text("بدهکار", style = MaterialTheme.typography.labelSmall, color = Color(0xFFEF4444), fontWeight = FontWeight.Bold)
+                                                Text(
+                                                    text = PersianNumberFormatter.formatPrice(totalDebt, currency),
+                                                    style = MaterialTheme.typography.labelMedium,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = Color(0xFFEF4444)
+                                                )
+                                            }
+                                        }
                                     } else {
-                                        Text(
-                                            text = "تسویه کامل",
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = Color(0xFF10B981)
-                                        )
+                                        Surface(
+                                            color = Color(0xFF10B981).copy(alpha = 0.12f),
+                                            shape = RoundedCornerShape(8.dp)
+                                        ) {
+                                            Text(
+                                                text = "تسویه کامل",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFF10B981),
+                                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }

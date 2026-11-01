@@ -62,7 +62,7 @@ class InvoiceRepository(private val database: AppDatabase) {
             setSetting("default_tax", "10")
         }
         if (getSetting("invoice_prefix") == null) {
-            setSetting("invoice_prefix", "INV-1403-")
+            setSetting("invoice_prefix", "${JalaliCalendar.getToday().year}-")
         }
         if (getSetting("theme_mode") == null) {
             setSetting("theme_mode", "SYSTEM")

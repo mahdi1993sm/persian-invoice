@@ -427,7 +427,7 @@ fun SettingsScreen(viewModel: InvoiceViewModel) {
                 Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("نرم‌افزار فاکتور پلاس", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("نسخه ۱.۰۰ • مجهز به تقویم شمسی جلالی و پایگاه داده محلی سریع", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("نسخه ۱.۱۱ • مجهز به تقویم شمسی جلالی و پایگاه داده محلی سریع", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }

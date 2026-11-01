@@ -251,15 +251,18 @@ fun InvoiceViewScreen(
                             }
                         }
 
-                        // 2. Seller and Buyer Information Boxes
+                        // 2. Seller and Buyer Information Boxes (Synchronized Height)
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Max),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             // Seller Box
                             Column(
                                 modifier = Modifier
                                     .weight(1f)
+                                    .fillMaxHeight()
                                     .border(1.dp, Color(0xFFCBD5E1), RoundedCornerShape(6.dp))
                                     .padding(8.dp)
                             ) {
@@ -286,6 +289,7 @@ fun InvoiceViewScreen(
                             Column(
                                 modifier = Modifier
                                     .weight(1f)
+                                    .fillMaxHeight()
                                     .border(1.dp, Color(0xFFCBD5E1), RoundedCornerShape(6.dp))
                                     .padding(8.dp)
                             ) {
